@@ -14,7 +14,7 @@ namespace ASCIIArt
     {
         public static string ASCIIFilter(this Bitmap image, int ratio = 1)
         {
-            Boolean toggle = false;
+            bool toggle = false;
             StringBuilder sb = new StringBuilder();
 
             for(int h = 0; h < image.Height; h+= ratio)
@@ -22,12 +22,9 @@ namespace ASCIIArt
                 for(int w = 0; w < image.Width; w+= ratio)
                 {
                     Color pixelColor = image.GetPixel(w, h);
-                    //Average out the RGB components to find the Gray Color
-                    int red = (pixelColor.R + pixelColor.G + pixelColor.B) / 3;
-                    int green = (pixelColor.R + pixelColor.G + pixelColor.B) / 3;
-                    int blue = (pixelColor.R + pixelColor.G + pixelColor.B) / 3;
+                    int red, green, blue;
+                    red = green = blue = (pixelColor.R + pixelColor.G + pixelColor.B) / 3;
                     Color grayColor = Color.FromArgb(red, green, blue);
-                    //Use the toggle flag to minimize height-wise stretch
                     if(!toggle)
                     {
                         int index = (grayColor.R * 10) / 255;
@@ -48,8 +45,11 @@ namespace ASCIIArt
 
             return sb.ToString();
         }
+
         private static string[] asciiChars = { "#", "#", "@", "%", "=", "+", "*", ":", "-", ".", " " };
 
+
+        //========================================================================================================
         public static string ASCIIFilter(this Bitmap sourceBitmap, int pixelBlockSize, int colorCount = 0)
         {
             BitmapData sourceData = sourceBitmap.LockBits(new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
