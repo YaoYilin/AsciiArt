@@ -31,23 +31,24 @@ namespace ASCIIArt
 
             if(fileDialog.ShowDialog() == DialogResult.OK)
             {
-                var srcBitmap = (Bitmap)Bitmap.FromFile(fileDialog.FileName, false);
+                using(var srcBitmap = Image.FromFile(fileDialog.FileName, false) as Bitmap)
+                {
+                    var v = comboBox1.SelectedIndex;
+                    var file = srcBitmap.ASCIIFilter(ratio[v]);
 
-                var v = comboBox1.SelectedIndex;
-                var file = srcBitmap.ASCIIFilter(ratio[v]);
+                    var fileName = Environment.CurrentDirectory + "\\" + Path.GetFileNameWithoutExtension(fileDialog.FileName) + ".txt";
 
-                var fileName = Environment.CurrentDirectory + "\\"+ Path.GetFileNameWithoutExtension(fileDialog.FileName) + ".txt";
+                    if(File.Exists(fileName))
+                        File.Delete(fileName);
 
-                if(File.Exists(fileName))
-                    File.Delete(fileName);
-
-                FileStream fs = new FileStream(fileName, FileMode.Create);
-                StreamWriter sw = new StreamWriter(fs);
-                sw.Write(file);
-                sw.Flush();
-                sw.Close();
-                fs.Close();
-                System.Diagnostics.Process.Start("notepad.exe", fileName);
+                    FileStream fs = new FileStream(fileName, FileMode.Create);
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.Write(file);
+                    sw.Flush();
+                    sw.Close();
+                    fs.Close();
+                    System.Diagnostics.Process.Start("notepad.exe", fileName);
+                }
             }
         }
     }
