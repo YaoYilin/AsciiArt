@@ -9,7 +9,7 @@
 
 or you can download released exe
 
-* TEXT -->  ASCIIArt.exe
+* TEST -->  ASCIIArt.exe
  * --> select a pictiure and then..
  
 
